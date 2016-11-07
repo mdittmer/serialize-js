@@ -1,0 +1,25 @@
+{
+  "name": "serialize-js",
+  "version": "0.0.1",
+  "description": "Serialization library implemented in Javascript",
+  "main": "src/serialize.es6.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdittmer/serialize-js.git"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": "Mark Dittmer",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/mdittmer/serialize-js/issues"
+  },
+  "homepage": "https://github.com/mdittmer/serialize-js#readme",
+  "eslintConfig": {
+    "extends": "google"
+  },
+  "dependencies": {
+    "lodash": "^4.16.6"
+  }
+}
