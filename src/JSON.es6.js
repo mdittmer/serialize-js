@@ -41,15 +41,15 @@ function fromJSON(json, registry, Ctor) {
   const KEY = this.key_;
 
   if (Array.isArray(json)) {
-    return json.map(datum => fromJSON(datum, registry, Ctor));
+    return json.map(datum => this.fromJSON(datum, registry, Ctor));
   } else if (json[KEY]) {
     const TypedCtor = (registry || defaultRegistry).lookup(json[KEY]) || Ctor;
-    const values = fromJSON(_.omit(json, [KEY]), registry, TypedCtor);
+    const values = this.fromJSON(_.omit(json, [KEY]), registry, TypedCtor);
     if (TypedCtor.fromJSON) return TypedCtor.fromJSON(values, registry);
-    if (TypedCtor.prototype.init) return clone(json, TypedCtor);
+    if (TypedCtor.prototype.init) return this.clone(json, TypedCtor);
     throw new Error(`Found constructor registered as "${json[KEY]}", but no ${json[KEY]}.fromJSON(json) or ${json[KEY]}.prototype.init(json)`);
   } else {
-    return _.mapValues(json, value => fromJSON(value, registry, Ctor));
+    return _.mapValues(json, value => this.fromJSON(value, registry, Ctor));
   }
 }
 
@@ -69,7 +69,7 @@ function toJSON(o, registry) {
   if (o.toJSON) return o.toJSON(registry);
 
   let json = Ctor && Ctor.jsonKeys ? _.pick(o, Ctor.jsonKeys) : o;
-  json = _.mapValues(json, value => toJSON(value, registry));
+  json = _.mapValues(json, value => this.toJSON(value, registry));
 
   if (Ctor === Object) return Object.assign({}, json);
 
