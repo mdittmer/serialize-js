@@ -78,4 +78,4 @@ function toJSON(o, registry) {
   return Object.assign(defaults, json);
 }
 
-module.exports = {clone, fromJSON, toJSON, key_: 'class_'};
+module.exports = {clone, fromJSON, toJSON, key_: 'type_'};
