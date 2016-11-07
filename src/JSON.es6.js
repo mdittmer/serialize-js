@@ -32,7 +32,7 @@ function clone(o, Ctor) {
   return ret;
 }
 
-function fromJSON(json, registry, Ctor) {
+function fromJSON(json, registry, Ctor = Object) {
   const type = typeof json;
   if (json === null || type === 'boolean' || type === 'string' ||
       type === 'function' || type === 'number')
