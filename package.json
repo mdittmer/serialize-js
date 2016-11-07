@@ -1,5 +1,5 @@
 {
-  "name": "simple-serialize",
+  "name": "simple-serialization",
   "version": "0.0.1",
   "description": "Serialization library implemented in Javascript",
   "main": "src/serialize.es6.js",
