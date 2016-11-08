@@ -32,6 +32,25 @@ function clone(o, Ctor) {
   return ret;
 }
 
+function deepClone(o, Ctor) {
+  const type = typeof o;
+  if (o === null || type === 'boolean' || type === 'string' ||
+      type === 'function' || type === 'number')
+    return o;
+
+  const RealCtor = Ctor || o.constructor;
+  if (o.deepClone) return o.deepClone();
+
+  let ret = new RealCtor();
+  if (ret.init) {
+    ret.init(_.mapValues(o, value => deepClone(value)));
+  } else {
+    Object.assign(ret, _.mapValues(o, value => deepClone(value)));
+  }
+
+  return ret;
+}
+
 function fromJSON(json, registry, Ctor = Object) {
   const type = typeof json;
   if (json === null || type === 'boolean' || type === 'string' ||
@@ -83,4 +102,4 @@ function toJSON(o, registry) {
   return Object.assign(defaults, json);
 }
 
-module.exports = {clone, fromJSON, toJSON, key_: 'type_'};
+module.exports = {clone, deepClone, fromJSON, toJSON, key_: 'type_'};
