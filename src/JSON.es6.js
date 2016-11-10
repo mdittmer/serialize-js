@@ -51,7 +51,7 @@ function deepClone(o, Ctor) {
   return ret;
 }
 
-function fromJSON(json, registry, Ctor = Object) {
+function fromJSON(json, registry) {
   const type = typeof json;
   if (json === null || type === 'boolean' || type === 'string' ||
       type === 'function' || type === 'number')
@@ -60,16 +60,16 @@ function fromJSON(json, registry, Ctor = Object) {
   const KEY = this.key_;
 
   if (Array.isArray(json))
-    return json.map(datum => this.fromJSON(datum, registry, Ctor));
+    return json.map(datum => this.fromJSON(datum, registry));
 
   let TypedCtor;
   let values;
   if (json[KEY]) {
-    TypedCtor = (registry || defaultRegistry).lookup(json[KEY]) || Ctor;
-    values = this.fromJSON(_.omit(json, [KEY]), registry, TypedCtor);
+    TypedCtor = (registry || defaultRegistry).lookup(json[KEY]) || Object;
+    values = this.fromJSON(_.omit(json, [KEY]), registry);
   } else {
-    TypedCtor = Ctor;
-    values = _.mapValues(json, value => this.fromJSON(value, registry, Ctor));
+    TypedCtor = Object;
+    values = _.mapValues(json, value => this.fromJSON(value, registry));
   }
 
   if (TypedCtor.fromJSON) return TypedCtor.fromJSON(values, registry);
@@ -84,7 +84,8 @@ function toJSON(o, registry) {
       type === 'function' || type === 'number')
     return o;
 
-  if (o.constructor === Object) return _.clone(o);
+  if (o.constructor === Object)
+    return _.mapValues(o, value => this.toJSON(value, registry));
   if (Array.isArray(o)) return o.map(o2 => this.toJSON(o2, registry));
 
   const Ctor = o.constructor;
